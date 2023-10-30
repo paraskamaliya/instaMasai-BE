@@ -8,8 +8,14 @@ postRouter.use(auth);
 postRouter.get("/", async (req, res) => {
     const { device } = req.query;
     try {
-        const data = await PostModel.find({ username: req.body.username, device: device })
-        res.status(200).send(data);
+        if (device) {
+            const data = await PostModel.find({ username: req.body.username, device: device })
+            res.status(200).send(data);
+        }
+        else {
+            const data = await PostModel.find({ username: req.body.username })
+            res.status(200).send(data);
+        }
     } catch (error) {
         res.status(400).send({ "message": "Something went wrong.", "err": error });
     }
